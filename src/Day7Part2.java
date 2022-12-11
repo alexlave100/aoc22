@@ -119,8 +119,7 @@ public class Day7Part2 {
 
     private void mapOutDirectoryStruct(String[] splittedLine) {
         if (splittedLine[0].equals("dir")) {
-            currentDirectory.subDirectories.putIfAbsent(splittedLine[1], new Directory(null));
-            currentDirectory.subDirectories.get(splittedLine[1]).previousDirectory = currentDirectory;
+            currentDirectory.subDirectories.putIfAbsent(splittedLine[1], new Directory(currentDirectory));
         } else {
             var fileExists = currentDirectory.directoryFiles.containsKey(splittedLine[1]);
             if (!fileExists) {
