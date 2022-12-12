@@ -74,9 +74,9 @@ public class Day12Part1 {
 
     private boolean outOfReach(int i, int j) {
         return i < 0
-                || i >= heightMap.size()
-                || j < 0
-                || j >= heightMap.get(i).size();
+            || i >= heightMap.size()
+            || j < 0
+            || j >= heightMap.get(i).size();
     }
     
     private void calculateShortestPath() {
