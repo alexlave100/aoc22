@@ -9,14 +9,18 @@ import java.util.List;
 import java.util.Queue;
 
 public class Day12Part2 {
-    File inputFile;
-    final char Start = 'S';
     final char End = 'E';
-
+    final char Start = 'S';
+    final int[][] directions = new int[][] {
+        new int[] {1, 0},
+        new int[] {-1,0},
+        new int[] {0, 1},
+        new int[] {0,-1}
+    };
+    
+    File inputFile;
     int[][] minDistanceToTravel;
-
     int shortestA = Integer.MAX_VALUE;
-
     List<List<Character>> heightMap = new ArrayList<>();
 
     public Day12Part2() throws IOException {
@@ -33,44 +37,33 @@ public class Day12Part2 {
         minDistanceToTravel[i][j] = 0;
 
         while (!unvisited.isEmpty()) {
-            var heightToVisit = unvisited.poll();
-            int k = heightToVisit[0];
-            int l = heightToVisit[1];
+            var currentHeight = unvisited.poll();
+            int currentNorthSouth = currentHeight[0];
+            int currentEastWest = currentHeight[1];
 
-            if (!outOfReach(k + 1, l) && canTravel(k + 1, l, k, l)) {
-                if (pathIsShorter(k + 1, l, k, l)) {
-                    addHeight(unvisited, k + 1, l, k, l);
-                }
-            }
-            if (!outOfReach(k - 1, l) && canTravel(k - 1, l, k, l)) {
-                if (pathIsShorter(k - 1, l, k, l)) {
-                    addHeight(unvisited, k - 1, l, k, l);
-                }
-            }
-            if (!outOfReach(k, l + 1) && canTravel(k, l + 1, k, l)) {
-                if (pathIsShorter(k, l + 1, k, l)) {
-                    addHeight(unvisited, k, l + 1, k, l);
-                }
-            }
-            if (!outOfReach(k, l - 1) && canTravel(k, l - 1, k, l)) {
-                if (pathIsShorter(k, l - 1, k, l)) {
-                    addHeight(unvisited, k, l - 1, k, l);
+            for (int d = 0; d < 4; d++) {
+                int northSouth = directions[d][0] + currentNorthSouth;
+                int eastWest = directions[d][1] + currentEastWest;
+                if (!outOfReach(northSouth, eastWest) && canTravel(northSouth, eastWest, currentNorthSouth, currentEastWest)) {
+                    if (pathIsShorter(northSouth, eastWest, currentNorthSouth, currentEastWest)) {
+                        addHeight(unvisited, northSouth, eastWest, currentNorthSouth, currentEastWest);
+                    }
                 }
             }
         }
     }
     
-    private boolean canTravel(int k, int l, int oldK, int oldL) {
-        return heightMap.get(oldK).get(oldL) <= heightMap.get(k).get(l) + 1;
+    private boolean canTravel(int newNorthSouth, int newEastWest, int currentNorthSouth, int currentEastWest) {
+        return heightMap.get(currentNorthSouth).get(currentEastWest) <= heightMap.get(newNorthSouth).get(newEastWest) + 1;
     }
 
-    private boolean pathIsShorter(int k, int l, int oldK, int oldL) {
-        return minDistanceToTravel[k][l] > minDistanceToTravel[oldK][oldL] + 1;
+    private boolean pathIsShorter(int newNorthSouth, int newEastWest, int currentNorthSouth, int currentEastWest) {
+        return minDistanceToTravel[newNorthSouth][newEastWest] > minDistanceToTravel[currentNorthSouth][currentEastWest] + 1;
     }
 
-    private void addHeight(Queue<int[]> unvisited, int k, int l, int oldK, int oldL) {
-        unvisited.add(new int[] { k, l });
-        minDistanceToTravel[k][l] = minDistanceToTravel[oldK][oldL] + 1;
+    private void addHeight(Queue<int[]> unvisited, int newNorthSouth, int newEastWest, int currentNorthSouth, int currentEastWest) {
+        unvisited.add(new int[] { newNorthSouth, newEastWest });
+        minDistanceToTravel[newNorthSouth][newEastWest] = minDistanceToTravel[currentNorthSouth][currentEastWest] + 1;
     }
 
     private boolean outOfReach(int i, int j) {
