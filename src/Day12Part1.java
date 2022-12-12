@@ -27,40 +27,45 @@ public class Day12Part1 {
 
     private void findShortestPathToGoal(int i, int j) {
         Queue<int[]> unvisited = new ArrayDeque<>();
-        unvisited.add(new int[] { i , j });
+        unvisited.add(new int[] { i, j });
 
         minDistanceToTravel[i][j] = 0;
-        
+
         while (!unvisited.isEmpty()) {
             var heightToVisit = unvisited.poll();
             int k = heightToVisit[0];
             int l = heightToVisit[1];
 
             if (!outOfReach(k + 1, l) && heightMap.get(k).get(l) <= heightMap.get(k + 1).get(l) + 1) {
-                if (minDistanceToTravel[k + 1][l] > minDistanceToTravel[k][l] + 1) {
-                    unvisited.add(new int[] { k + 1, l });
-                    minDistanceToTravel[k + 1][l] = minDistanceToTravel[k][l] + 1;
+                if (canTravel(k + 1, l, k, l)) {
+                    addHeight(unvisited, k + 1, l, k, l);
                 }
             }
             if (!outOfReach(k - 1, l) && heightMap.get(k).get(l) <= heightMap.get(k - 1).get(l) + 1) {
-                if (minDistanceToTravel[k - 1][l] > minDistanceToTravel[k][l] + 1) {
-                    unvisited.add(new int[] { k - 1, l });
-                    minDistanceToTravel[k - 1][l] = minDistanceToTravel[k][l] + 1;
+                if (canTravel(k - 1, l, k, l)) {
+                    addHeight(unvisited, k - 1, l, k, l);
                 }
             }
             if (!outOfReach(k, l + 1) && heightMap.get(k).get(l) <= heightMap.get(k).get(l + 1) + 1) {
-                if (minDistanceToTravel[k][l + 1] > minDistanceToTravel[k][l] + 1) {
-                    unvisited.add(new int[] { k, l + 1});
-                    minDistanceToTravel[k][l + 1] = minDistanceToTravel[k][l] + 1;
+                if (canTravel(k, l + 1, k, l)) {
+                    addHeight(unvisited, k, l + 1, k, l);
                 }
             }
             if (!outOfReach(k, l - 1) && heightMap.get(k).get(l) <= heightMap.get(k).get(l - 1) + 1) {
-                if (minDistanceToTravel[k][l - 1] > minDistanceToTravel[k][l] + 1) {
-                    unvisited.add(new int[] { k, l - 1});
-                    minDistanceToTravel[k][l - 1] = minDistanceToTravel[k][l] + 1;
+                if (canTravel(k, l - 1, k, l)) {
+                    addHeight(unvisited, k, l - 1, k, l);
                 }
             }
         }
+    }
+    
+    private boolean canTravel(int k, int l, int oldK, int oldL) {
+        return minDistanceToTravel[k][l] > minDistanceToTravel[oldK][oldL] + 1;
+    }
+
+    private void addHeight(Queue<int[]> unvisited, int k, int l, int oldK, int oldL) {
+        unvisited.add(new int[] { k, l });
+        minDistanceToTravel[k][l] = minDistanceToTravel[oldK][oldL] + 1;
     }
 
     private boolean outOfReach(int i, int j) {
