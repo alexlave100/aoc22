@@ -37,23 +37,23 @@ public class Day12Part2 {
             int k = heightToVisit[0];
             int l = heightToVisit[1];
 
-            if (!outOfReach(k + 1, l) && heightMap.get(k).get(l) <= heightMap.get(k + 1).get(l) + 1) {
-                if (canTravel(k + 1, l, k, l)) {
+            if (!outOfReach(k + 1, l) && canTravel(k + 1, l, k, l)) {
+                if (pathIsShorter(k + 1, l, k, l)) {
                     addHeight(unvisited, k + 1, l, k, l);
                 }
             }
-            if (!outOfReach(k - 1, l) && heightMap.get(k).get(l) <= heightMap.get(k - 1).get(l) + 1) {
-                if (canTravel(k - 1, l, k, l)) {
+            if (!outOfReach(k - 1, l) && canTravel(k - 1, l, k, l)) {
+                if (pathIsShorter(k - 1, l, k, l)) {
                     addHeight(unvisited, k - 1, l, k, l);
                 }
             }
-            if (!outOfReach(k, l + 1) && heightMap.get(k).get(l) <= heightMap.get(k).get(l + 1) + 1) {
-                if (canTravel(k, l + 1, k, l)) {
+            if (!outOfReach(k, l + 1) && canTravel(k, l + 1, k, l)) {
+                if (pathIsShorter(k, l + 1, k, l)) {
                     addHeight(unvisited, k, l + 1, k, l);
                 }
             }
-            if (!outOfReach(k, l - 1) && heightMap.get(k).get(l) <= heightMap.get(k).get(l - 1) + 1) {
-                if (canTravel(k, l - 1, k, l)) {
+            if (!outOfReach(k, l - 1) && canTravel(k, l - 1, k, l)) {
+                if (pathIsShorter(k, l - 1, k, l)) {
                     addHeight(unvisited, k, l - 1, k, l);
                 }
             }
@@ -61,6 +61,10 @@ public class Day12Part2 {
     }
     
     private boolean canTravel(int k, int l, int oldK, int oldL) {
+        return heightMap.get(oldK).get(oldL) <= heightMap.get(k).get(l) + 1;
+    }
+
+    private boolean pathIsShorter(int k, int l, int oldK, int oldL) {
         return minDistanceToTravel[k][l] > minDistanceToTravel[oldK][oldL] + 1;
     }
 
