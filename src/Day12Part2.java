@@ -13,7 +13,6 @@ public class Day12Part2 {
     final char Start = 'S';
     final char End = 'E';
 
-    int[] startCoordinates = new int[2];
     int[][] minDistanceToTravel;
 
     int shortestA = Integer.MAX_VALUE;

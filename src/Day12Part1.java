@@ -13,7 +13,7 @@ public class Day12Part1 {
     final char Start = 'S';
     final char End = 'E';
 
-    int[] startCoordinates = new int[2];
+    int[] startCoordinates;
     int[][] minDistanceToTravel;
 
     List<List<Character>> heightMap = new ArrayList<>();
@@ -71,25 +71,15 @@ public class Day12Part1 {
     }
     
     private void calculateShortestPath() {
-        boolean foundStart = false, foundEnd = false;
         for (int i = 0; i < heightMap.size(); i++) {
             for (int j = 0; j < heightMap.get(i).size(); j++) {
                 if (heightMap.get(i).get(j).equals(End)) {
                     heightMap.get(i).set(j, 'z');
                     findShortestPathToGoal(i, j);
-                    foundEnd = true;
                 } else if (heightMap.get(i).get(j).equals(Start)) {
                     heightMap.get(i).set(j, 'a');
-                    startCoordinates[0] = i;
-                    startCoordinates[1] = j;
-                    foundStart = true;
+                    startCoordinates = new int[]{ i, j };
                 }
-                if (foundStart && foundEnd) {
-                    break;
-                }
-            }
-            if (foundStart && foundEnd) {
-                break;
             }
         }
     }
