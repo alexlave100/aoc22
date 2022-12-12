@@ -86,20 +86,13 @@ public class Day12Part2 {
                 if (heightMap.get(i).get(j).equals(End)) {
                     heightMap.get(i).set(j, 'z');
                     findShortestPathToGoal(i, j);
+                } else if (heightMap.get(i).get(j).equals('a')) {
+                    shortestA = Math.min(shortestA, minDistanceToTravel[i][j]);
                 } else if (heightMap.get(i).get(j).equals(Start)) {
                     heightMap.get(i).set(j, 'a');
                 }
             }
         }
-
-        for (int i = 0; i < heightMap.size(); i++) {
-            for (int j = 0; j < heightMap.get(i).size(); j++) {
-                if (heightMap.get(i).get(j).equals('a')) {
-                    shortestA = Math.min(shortestA, minDistanceToTravel[i][j]);
-                }
-            }
-        }
-
     }
 
     private void buildHeightMap() throws IOException {
